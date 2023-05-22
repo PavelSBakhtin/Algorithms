@@ -13,6 +13,10 @@ def cubeCount(n):
         for j in range(0, n):
             for x in range(0, n):
                 for y in range(0, n):
+                    i += 1
+                    j += 1
+                    x += 1
+                    y += 1
                     res += 1
     return res
 
@@ -28,16 +32,18 @@ def recursCount(d, k, n):
             count += 1
         else:
             count += recursCount(d + 1, k, n)
+        i += 1
     return count
 
 k = int(input("Enter the number of cubes: "))
 n = int(input("Enter the number of faces: "))
 print('Choose an option:\n1. Four cubes and N faces\n2. K cubes and N faces')
-m = input('Selection: ')
+m = int(input('Selection: '))
 while True:
     if m == 1:
         print(f"Four cubes and N faces, combinations: {cubeCount(n)}")
     if m == 2:
         print(f"K cubes and N faces, combinations: {combiCount(k, n)}")
-    else:
         break
+    else:
+        continue
