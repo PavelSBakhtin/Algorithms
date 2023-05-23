@@ -39,11 +39,10 @@ k = int(input("Enter the number of cubes: "))
 n = int(input("Enter the number of faces: "))
 print('Choose an option:\n1. Four cubes and N faces\n2. K cubes and N faces')
 m = int(input('Selection: '))
-while True:
-    if m == 1:
-        print(f"Four cubes and N faces, combinations: {cubeCount(n)}")
-    if m == 2:
-        print(f"K cubes and N faces, combinations: {combiCount(k, n)}")
-        break
-    else:
-        continue
+
+if m == 1:
+    print(f"Four cubes and N faces, combinations: {cubeCount(n)}")
+elif m == 2:
+    print(f"K cubes and N faces, combinations: {combiCount(k, n)}")
+else:
+    print("Error")
