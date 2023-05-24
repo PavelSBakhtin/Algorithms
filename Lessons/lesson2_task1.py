@@ -3,15 +3,6 @@
 
 import random
 
-def bubSort(n):
-    for i in range(0, len(n) - 1):
-        for j in range(0, len(n) - 1 - i):
-            if n[j] > n[j + 1]:
-                temp = n[j]
-                n[j] = n[j + 1]
-                n[j + 1] = temp
-    return n
-
 def randNums():
     a = []
     l = random.randint(5, 7)
@@ -26,6 +17,24 @@ def randNums():
         i += 1
     return a
 
+def bubbleSort(n):
+    for i in range(0, len(n) - 1):
+        for j in range(0, len(n) - 1 - i):
+            if n[j] > n[j + 1]:
+                temp = n[j]
+                n[j] = n[j + 1]
+                n[j + 1] = temp
+    return n
+
+def directSort(n):
+    for i in range(len(n)):
+        mPos = i
+        for j in range(i, len(n)):
+            if n[j] < n[mPos]:
+                n[mPos], n[j] = n[j], n[mPos]
+    return n
+
 b = randNums()
 print(b)
-print(bubSort(b))
+print(bubbleSort(b))
+print(directSort(b))
