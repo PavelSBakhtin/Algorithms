@@ -42,20 +42,15 @@ def choiceSort(n):
             n[mPos], n[i] = n[i], n[mPos]
     return n
 
+def duration():
+    st = time.time()
+    time.sleep(1)
+    et = time.time()
+    t = et - st
+    return t
+
 b = randNums()
 print(b)
-st_b = time.time()
-time.sleep(1)
-et_b = time.time()
-tb = et_b - st_b
-print(f"{bubbleSort(b)} : {tb}")
-st_i = time.time()
-time.sleep(1)
-et_i = time.time()
-ti = et_i - st_i
-print(f"{insertSort(b)} : {ti}")
-st_c = time.time()
-time.sleep(1)
-et_c = time.time()
-tc = et_c - st_c
-print(f"{choiceSort(b)} : {tc}")
+print(f"{bubbleSort(b)} : {duration()}")
+print(f"{insertSort(b)} : {duration()}")
+print(f"{choiceSort(b)} : {duration()}")
