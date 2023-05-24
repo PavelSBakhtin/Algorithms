@@ -29,7 +29,7 @@ def bubbleSort(n):
 def directSort(n):
     for i in range(len(n)):
         mPos = i
-        for j in range(i, len(n)):
+        for j in range(i + 1, len(n)):
             if n[j] < n[mPos]:
                 n[mPos], n[j] = n[j], n[mPos]
     return n
