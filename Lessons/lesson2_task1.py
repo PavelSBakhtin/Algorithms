@@ -2,6 +2,7 @@
 # Можно выбрать из пузырьковой сортировки, сортировки вставками и сортировки выбором.
 
 import random
+import time
 
 def randNums():
     a = []
@@ -21,16 +22,14 @@ def bubbleSort(n):
     for i in range(0, len(n) - 1):
         for j in range(0, len(n) - 1 - i):
             if n[j] > n[j + 1]:
-                temp = n[j]
-                n[j] = n[j + 1]
-                n[j + 1] = temp
+                n[j], n[j + 1] = n[j + 1], n[j]
     return n
 
 def insertSort(n):
-    for i in range(len(n)):
+    for i in range(len(n) - 1):
         for j in range(i + 1, len(n)):
             if n[j] < n[i]:
-                n[j], n[j] = n[j], n[j]
+                n[i], n[j] = n[j], n[i]
     return n
 
 def choiceSort(n):
@@ -43,16 +42,20 @@ def choiceSort(n):
             n[mPos], n[i] = n[i], n[mPos]
     return n
 
-# def choiceSort(n):
-#     for i in range(len(n) - 1):
-#         mPos = i
-#         for j in range(i + 1, len(n)):
-#             if n[j] < n[mPos]:
-#                 n[mPos], n[j] = n[j], n[mPos]
-#     return n
-
 b = randNums()
 print(b)
-print(bubbleSort(b))
-print(insertSort(b))
-print(choiceSort(b))
+st_b = time.time()
+time.sleep(1)
+et_b = time.time()
+tb = et_b - st_b
+print(f"{bubbleSort(b)} : {tb}")
+st_i = time.time()
+time.sleep(1)
+et_i = time.time()
+ti = et_i - st_i
+print(f"{insertSort(b)} : {ti}")
+st_c = time.time()
+time.sleep(1)
+et_c = time.time()
+tc = et_c - st_c
+print(f"{choiceSort(b)} : {tc}")
