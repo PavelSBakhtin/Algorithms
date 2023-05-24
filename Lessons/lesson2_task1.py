@@ -26,15 +26,33 @@ def bubbleSort(n):
                 n[j + 1] = temp
     return n
 
-def directSort(n):
+def insertSort(n):
     for i in range(len(n)):
+        for j in range(i + 1, len(n)):
+            if n[j] < n[i]:
+                n[j], n[j] = n[j], n[j]
+    return n
+
+def choiceSort(n):
+    for i in range(len(n) - 1):
         mPos = i
         for j in range(i + 1, len(n)):
             if n[j] < n[mPos]:
-                n[mPos], n[j] = n[j], n[mPos]
+                mPos = j
+        if (mPos != i):
+            n[mPos], n[i] = n[i], n[mPos]
     return n
+
+# def choiceSort(n):
+#     for i in range(len(n) - 1):
+#         mPos = i
+#         for j in range(i + 1, len(n)):
+#             if n[j] < n[mPos]:
+#                 n[mPos], n[j] = n[j], n[mPos]
+#     return n
 
 b = randNums()
 print(b)
 print(bubbleSort(b))
-print(directSort(b))
+print(insertSort(b))
+print(choiceSort(b))
