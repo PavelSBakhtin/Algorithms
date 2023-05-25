@@ -46,8 +46,8 @@ def duration():
     st = time.time()
     time.sleep(1)
     et = time.time()
-    t = et - st
-    return t
+    tt = et - st
+    return tt
 
 b = randNums()
 print(b)
