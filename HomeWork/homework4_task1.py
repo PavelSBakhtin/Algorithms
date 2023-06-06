@@ -12,201 +12,105 @@
 # произвести балансировку, благодаря которой все критерии выше станут валидными. Для балансировки
 # существует 3 операции – левый малый поворот, правый малый поворот и смена цвета.
 
-# class Node:
-#     def init(self, key):
-#         self.key = key
-#         self.left = None
-#         self.right = None
-#         self.is_red = True
-
-# class LeftLeaningRedBlackTree:
-#     def init(self):
-#         self.root = None
-
-#     def insert(self, key):
-#         self.root = self._insert(self.root, key)
-#         self.root.is_red = False
-
-#     def _insert(self, node, key):
-#         if node is None:
-#             return Node(key)
-
-#         if key < node.key:
-#             node.left = self._insert(node.left, key)
-#         elif key > node.key:
-#             node.right = self._insert(node.right, key)
-#         else:
-#             return node
-
-#         if self._is_red(node.right) and not self._is_red(node.left):
-#             node = self._rotate_left(node)
-#         if self._is_red(node.left) and self._is_red(node.left.left):
-#             node = self._rotate_right(node)
-#         if self._is_red(node.left) and self._is_red(node.right):
-#             self._flip_colors(node)
-
-#         return node
-
-#     def _is_red(self, node):
-#         if node is None:
-#             return False
-#         return node.is_red
-
-#     def _rotate_left(self, node):
-#         x = node.right
-#         node.right = x.left
-#         x.left = node
-#         x.is_red = node.is_red
-#         node.is_red = True
-#         return x
-
-#     def _rotate_right(self, node):
-#         x = node.left
-#         node.left = x.right
-#         x.right = node
-#         x.is_red = node.is_red
-#         node.is_red = True
-#         return x
-
-#     def _flip_colors(self, node):
-#         node.is_red = True
-#         node.left.is_red = False
-#         node.right.is_red = False
-
-# tree = LeftLeaningRedBlackTree()
-# tree.insert(10)
-# tree.insert(5)
-# tree.insert(15)
-# tree.insert(3)
-# tree.insert(7)
-# tree.insert(13)
-# tree.insert(20)
-
-
-def ex():
-    tree = Tree()
-    tree.add(1)
-    tree.add(5)
-    tree.add(8)
-    tree.add(4)
-    tree.add(3)
-    tree.add(10)
-    tree.add(7)
-    tree.print()
-
-
 class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+        self.color = "red"
+
+
+class RedBlackTree():
+
+    COLOR_RED = "red"
+    COLOR_BLACK = "black"
+
     def __init__(self):
-        self.value: int = None
-        self.isRed: bool = False
-        self.left: Node = None
-        self.right: Node = None
+        self.root = None
 
+    def rotate_left(self, my_node):
+        child = my_node.right
+        child_left = child.left
+        child.left = my_node
+        my_node.right = child_left
+        return child
 
-class Tree:
-    def __init__(self):
-        self.root: Node = None
+    def rotate_right(self, my_node):
+        child = my_node.left
+        child_right = child.right
+        child.right = my_node
+        my_node.left = child_right
+        return child
 
-    def print(self):
-        self.print_node(self.root)
+    def is_red(self, my_node):
+        return my_node != None and my_node.color == RedBlackTree.COLOR_RED
 
-    def add(self, value: int):
-        result = True
+    def swap_colors(self, node1, node2):
+        temp = node1.color
+        node1.color = node2.color
+        node2.color = temp
 
-        if self.root is not None:
-            result = self.add_note(self.root, value)
-            self.root = self.rebalancing(self.root)
-            self.root.isRed = False
+    def insert(self, data):
+        node = None
+        if self.root:
+            node = self.insert_balance(self.root, data)
+            if not node:
+                return False
         else:
-            self.root = Node()
-            self.root.isRed = False
-            self.root.value = value
-
+            node = Node(data)
+        self.root = node
+        self.root.color = RedBlackTree.COLOR_BLACK
         return True
 
-    def rebalancing(self, node) -> Node:
-        result: Node = node
-        need_rebalancing = True
-
-        while need_rebalancing:
-
-            need_rebalancing = False
-
-            if (result.right is not None and result.right.isRed and
-                    (result.left is None or not result.left.isRed)):
-                need_rebalancing = True
-                result = self.right_swap(result)
-
-            if (result.left is not None and result.left.isRed and
-                    result.left.left is not None and result.left.left.isRed):
-                need_rebalancing = True
-                result = self.left_swap(result)
-
-            if (result.left is not None and result.left.isRed and
-                    result.right is not None and result.right.isRed):
-                need_rebalancing = True
-                self.color_swap(result)
-
-        return result
-
-    def right_swap(self, node: Node) -> Node:
-        right = node.right
-        between = right.left
-        right.left = node
-        node.right = between
-        right.isRed = node.isRed
-        node.isRed = True
-        return right
-
-    def left_swap(self, node: Node) -> Node:
-        left = node.left
-        between = left.right
-        left.right = node
-        node.left = between
-        left.isRed = node.isRed
-        node.isRed = True
-        return left
-
-    def color_swap(self, node: Node):
-        node.right.isRed = False
-        node.left.isRed = False
-        node.isRed = True
-
-    def add_note(self, node: Node, value: int):
-
-        if (node.value == value):
-            return False
-
-        result: bool = True
-
-        if node.value > value:
-            if node.left is not None:
-                result = self.add_note(node.left, value)
-                node.left = self.rebalancing(node.left)
-            else:
-                node.left = Node()
-                node.left.isRed = True
-                node.left.value = value
-                result = True
+    def insert_balance(self, my_node, data):
+        if my_node == None:
+            return Node(data)
+        if my_node.data > data:
+            my_node.left = self.insert_balance(my_node.left, data)
+        elif my_node.data < data:
+            my_node.right = self.insert_balance(my_node.right, data)
         else:
-            if (node.right is not None):
-                result = self.add_note(node.right, value)
-                node.right = self.rebalancing(node.right)
-            else:
-                node.right = Node()
-                node.right.isRed = True
-                node.right.value = value
-                result = True
+            return None
+        return self.balanced(my_node)
 
-        return result
+    def balanced(self, my_node):
+        if self.is_red(my_node.right) and not self.is_red(my_node.left):
+            my_node = self.rotate_left(my_node)
+            self.swap_colors(my_node, my_node.left)
+        if self.is_red(my_node.left) and self.is_red(my_node.left.left):
+            my_node = self.rotate_right(my_node)
+            self.swap_colors(my_node, my_node.right)
+        if self.is_red(my_node.left) and self.is_red(my_node.right):
+            my_node.color = RedBlackTree.COLOR_RED
+            my_node.left.color = RedBlackTree.COLOR_BLACK
+            my_node.right.color = RedBlackTree.COLOR_BLACK
+        return my_node
 
-    def print_node(self, node: Node):
-        if node is None:
-            return
-        self.print_node(node.left)
-        print(node.value)
-        self.print_node(node.right)
+    def draw_tree(self, node, offset=0):
+        if node is not None:
+            self.draw_tree(node.right, offset + 4)
+            print(' ' * offset + str(node.data) + ' (' + node.color + ')')
+            self.draw_tree(node.left, offset + 4)
 
 
-if __name__ == '__main__':
-    ex()
+if __name__ == "__main__":
+
+    node = RedBlackTree()
+    print("-----------------------")
+    node.insert(10)
+    node.draw_tree(node.root)
+    print("-----------------------")
+    node.insert(20)
+    node.draw_tree(node.root)
+    print("-----------------------")
+    node.insert(30)
+    node.draw_tree(node.root)
+    print("-----------------------")
+    node.insert(40)
+    node.draw_tree(node.root)
+    print("-----------------------")
+    node.insert(50)
+    node.draw_tree(node.root)
+    print("-----------------------")
+    node.insert(25)
+    node.draw_tree(node.root)
